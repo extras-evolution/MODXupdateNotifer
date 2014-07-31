@@ -41,7 +41,7 @@ $output = '';
                 $gitVersion= $cache->get('unw');
         }
         $currentVersion = $modx->getVersionData();
-		$message = !empty($message) ? $modx->getChunk($message) : '<div style="font-size:20px;color:red;">Система управления сайтом устарела - возможны проблемы с безопасностью. Для обновления обратитесь к разработчикам сайта. Новая версия сайта: <strong>'.$gitVersion.'</strong></div>';
+		$message = !empty($message) ? $modx->getChunk($message) : '<div style="font-size:20px;color:red;">Система управления сайтом устарела - возможны проблемы с безопасностью. Для обновления обратитесь к разработчикам сайта. Новая версия MODX Evolution: <strong>'.$gitVersion.'</strong></div>';
         if ($gitVersion != $currentVersion['version']) {
                 $output = '<div class="sectionHeader">Внимание!</div><div class="sectionBody">'.$message.'</div>';
         }
