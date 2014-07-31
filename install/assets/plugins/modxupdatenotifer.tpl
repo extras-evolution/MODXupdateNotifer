@@ -1,11 +1,11 @@
 //<?php
 /**
- * MODX.EVO.Custom.updateNotify
+ * MODX.Evolution.updateNotify
  *
  * show message about outdated CMS version
  *
  * @category    plugin
- * @version     0.2
+ * @version     0.1
  * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @package     modx
  * @author      Pathologic (m@xim.name) 
@@ -23,10 +23,10 @@ $output = '';
         $cache = new RSSCache(MODX_BASE_PATH.'assets/cache/', $cache_lifetime*3600);
         if($cache->check_cache('unw') != 'HIT'){
                 $ch = curl_init();
-                $url = 'https://api.github.com/repos/dmi3yy/modx.evo.custom/tags';
+                $url = 'https://api.github.com/repos/modxcms/evolution/tags';
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
                 curl_setopt($ch, CURLOPT_HEADER, false);
-			//curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_REFERER, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -35,14 +35,18 @@ $output = '';
                 curl_close($ch);
                 if (substr($info,0,1) != '[') return;
                 $info = json_decode($info,true);
-                $gitVersion = $info[0]['name'];
+                $gitVersion = explode('-',substr($info[0]['name'],1));
+                $gitVersion = $gitVersion[0];
                 $cache->set('unw',$gitVersion);
         } else {
                 $gitVersion= $cache->get('unw');
         }
         $currentVersion = $modx->getVersionData();
-		$message = !empty($message) ? $modx->getChunk($message) : '<div style="font-size:20px;color:red;">Система управления сайтом устарела - возможны проблемы с безопасностью. Для обновления обратитесь к разработчикам сайта. Новая версия MODX Evolution: <strong>'.$gitVersion.'</strong></div>';
-        if ($gitVersion != $currentVersion['version']) {
+        $currentVersion = explode('-',$currentVersion['version']);
+        preg_match("/^.*[^\D]/", $currentVersion[0], $currentVersion);
+        if (substr_count('.',$currentVersion[0]) == 1) $currentVersion[0] .= '.0';
+        $message = !empty($message) ? $modx->getChunk($message) : '<div style="font-size:20px;color:red;">Система управления сайтом устарела - возможны проблемы с безопасностью. Для обновления обратитесь к разработчикам сайта. Новая версия: '.$gitVersion.' </div>';
+        if (version_compare($gitVersion,$currentVersion[0]) > 0) {
                 $output = '<div class="sectionHeader">Внимание!</div><div class="sectionBody">'.$message.'</div>';
         }
 $e->output($output);
