@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @package     modx
  * @author      Dmi3yy (dmi3yy.com) 
- * @internal    @events OnManagerWelcomePrerender
+ * @internal    @events OnManagerWelcomePrerender,OnPageNotFound
  * @internal    @modx_category Manager and Admin
  * @internal    @properties &cache_lifetime = Время жизни кэша, часов;text;24 
  * @internal    @installset base
