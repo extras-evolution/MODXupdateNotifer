@@ -37,7 +37,7 @@ if($e->name == 'OnManagerWelcomePrerender'){
           </div>
           <div class="panel-body widget-stage sectionBody">
                Система управления сайтом устарела - возможны проблемы с безопасностью. Для обновления обратитесь к разработчикам сайта. <br><br>
-			   <a target="_blank" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-default">Обновить до версии '.$gitVersion.'</a><br><br>
+			   <a target="_parent" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-default">Обновить до версии '.$gitVersion.'</a><br><br>
 			   <small style="color:red;font-size:10px">Настоятельно рекомендую сделать бекап перед обновлением системы, обновление выполняете на свой страх и риск!!</small>
           </div>
         </div>
