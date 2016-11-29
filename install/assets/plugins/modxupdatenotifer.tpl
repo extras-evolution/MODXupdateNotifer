@@ -17,3 +17,4 @@
  */
  
 require MODX_BASE_PATH.'assets/plugins/modxupdater/plugin.modxupdater.php';
+
