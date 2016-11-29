@@ -7,7 +7,7 @@ if($e->name == 'OnManagerWelcomePrerender'){
 	$cache = new RSSCache(MODX_BASE_PATH.'assets/cache/', $cache_lifetime*3600);
 	if($cache->check_cache('unw') != 'HIT'){
 		$ch = curl_init();
-		$url = 'https://api.github.com/repos/dmi3yy/modx.evo.custom/releases';
+		$url = 'https://api.github.com/repos/modxcms/evolution/tags';
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		//curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -132,7 +132,7 @@ function mmkDir($folder, $perm = 0777)
     }
 }
 
-downloadFile("https://github.com/dmi3yy/modx.evo.custom/archive/" . $_GET["version"] . ".zip", "modx.zip");
+downloadFile("https://github.com/modxcms/evolution/archive/" . $_GET["version"] . ".zip", "modx.zip");
 $zip = new ZipArchive;
 $res = $zip->open(dirname(__FILE__) . "/modx.zip");
 $zip->extractTo(dirname(__FILE__) . "/temp");
