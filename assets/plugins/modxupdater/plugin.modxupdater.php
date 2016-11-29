@@ -7,7 +7,7 @@ if($e->name == 'OnManagerWelcomePrerender'){
 	$cache = new RSSCache(MODX_BASE_PATH.'assets/cache/', $cache_lifetime*3600);
 	if($cache->check_cache('unw') != 'HIT'){
 		$ch = curl_init();
-		$url = 'https://api.github.com/repos/dmi3yy/modx.evo.custom/releases';
+		$url = 'https://api.github.com/repos/dmi3yy/modx.evo.custom/tags';
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		//curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -37,7 +37,7 @@ if($e->name == 'OnManagerWelcomePrerender'){
           </div>
           <div class="panel-body widget-stage sectionBody">
                Система управления сайтом устарела - возможны проблемы с безопасностью. Для обновления обратитесь к разработчикам сайта. <br><br>
-			   <a target="_blank" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-default">Обновить до версии '.$gitVersion.'</a><br><br>
+			   <a target="_parent" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-default">Обновить до версии '.$gitVersion.'</a><br><br>
 			   <small style="color:red;font-size:10px">Настоятельно рекомендую сделать бекап перед обновлением системы, обновление выполняете на свой страх и риск!!</small>
           </div>
         </div>
