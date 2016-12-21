@@ -29,15 +29,21 @@ if($e->name == 'OnManagerWelcomePrerender'){
 	$_SESSION['updatelink'] = md5(time());
 	$_SESSION['updateversion'] = $gitVersion;
 	if ($gitVersion != $currentVersion['version']) {
-
+	// get manager role
+	$role = $_SESSION['mgrRole'];
+	if(($role!=1) AND ($showButton == 'AdminOnly') OR ($showButton == 'hide')) {
+		$updateButton = '';
+	}  else {
+	$updateButton = '<a target="_parent" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-default">Обновить до версии '.$gitVersion.'</a><br><br>';
+	}	
 	$output = '<li id="modxupdate_widget" data-row="7" data-col="1" data-sizex="4" data-sizey="3" class="gs-w" style="margin-top:10px">
         <div class="panel panel-default widget-wrapper">
-          <div class="panel-headingx widget-title sectionHeader clearfix">
-            <span class="panel-handel pull-left"><i class="fa fa-exclamation-triangle"></i> Обновление системы</span>
+          <div style=cursor:auto;" class="panel-headingx widget-title sectionHeader clearfix">
+            <span style=cursor:auto;" class="panel-handel pull-left"><i class="fa fa-exclamation-triangle"></i> Обновление системы</span>
           </div>
           <div class="panel-body widget-stage sectionBody">
                Система управления сайтом устарела - возможны проблемы с безопасностью. Для обновления обратитесь к разработчикам сайта. <br><br>
-			   <a target="_parent" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-default">Обновить до версии '.$gitVersion.'</a><br><br>
+			   '.$updateButton.'
 			   <small style="color:red;font-size:10px">Настоятельно рекомендую сделать бекап перед обновлением системы, обновление выполняете на свой страх и риск!!</small>
           </div>
         </div>
@@ -178,4 +184,3 @@ header("Location: /install/index.php?action=mode");
 	}
 	
 }
-
