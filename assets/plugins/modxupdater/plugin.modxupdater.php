@@ -26,6 +26,10 @@ if($e->name == 'OnManagerWelcomePrerender'){
         $errorsMessage .= '-Необходимо включить функцию OpenSSL в PHP<br>';
         $errors += 1;
     }
+    if (!is_writable(MODX_BASE_PATH.'assets/')){
+        $errorsMessage .= '-Файлы MODX не доступны для перезаписи<br>';
+        $errors += 1;
+    }
     
     if($version == 'auto'){
         if(stristr($modx->config['settings_version'], 'd') === FALSE) {
