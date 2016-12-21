@@ -22,6 +22,10 @@ if($e->name == 'OnManagerWelcomePrerender'){
         $errorsMessage .= '-Необходимо включить функцию ZIP в PHP<br>';
         $errors += 1;
     }
+    if (!extension_loaded('openssl')){
+        $errorsMessage .= '-Необходимо включить функцию OpenSSL в PHP<br>';
+        $errors += 1;
+    }
     
     if($version == 'auto'){
         if(stristr($modx->config['settings_version'], 'd') === FALSE) {
