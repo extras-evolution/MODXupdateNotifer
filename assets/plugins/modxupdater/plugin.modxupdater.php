@@ -2,12 +2,22 @@
 if(!defined('MODX_BASE_PATH')){die('What are you doing? Get out of here!');}
 $e = &$modx->Event;
 if($e->name == 'OnManagerWelcomePrerender'){
-	$output = '';
+	
+    
+    if($version == 'auto'){
+        if(stristr($modx->config['settings_version'], 'd') === FALSE) {
+            $version = 'modxcms/evolution';
+        }else{
+            $version = 'dmi3yy/modx.evo.custom';
+        }
+    }
+
+    $output = '';
 	require_once(MODX_MANAGER_PATH.'media/rss/rss_cache.inc');
 	$cache = new RSSCache(MODX_BASE_PATH.'assets/cache/', $cache_lifetime*3600);
 	if($cache->check_cache('unw') != 'HIT'){
 		$ch = curl_init();
-		$url = 'https://api.github.com/repos/dmi3yy/modx.evo.custom/tags';
+		$url = 'https://api.github.com/repos/'.$version.'/'.$type;
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		//curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
