@@ -153,7 +153,8 @@ function copyFolder($src, $dest)
 {
     $path    = realpath($src);
     $dest    = realpath($dest);
-    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::SELF_FIRST);
+    $erty = new RecursiveDirectoryIterator($path);
+    $objects = new RecursiveIteratorIterator($erty, RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {
 
         $startsAt = substr(dirname($name), strlen($path));
