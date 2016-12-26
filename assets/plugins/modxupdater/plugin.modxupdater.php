@@ -175,7 +175,13 @@ function mmkDir($folder, $perm = 0777)
     }
 }
 
-downloadFile("https://github.com/dmi3yy/modx.evo.custom/archive/" . $_GET["version"] . ".zip", "modx.zip");
+if(stristr($_GET["version"], "d") === FALSE) {
+        $version = "modxcms/evolution";
+}else{
+        $version = "dmi3yy/modx.evo.custom";
+}
+
+downloadFile("https://github.com/".$version."/archive/" . $_GET["version"] . ".zip", "modx.zip");
 $zip = new ZipArchive;
 $res = $zip->open(dirname(__FILE__) . "/modx.zip");
 $zip->extractTo(dirname(__FILE__) . "/temp");
