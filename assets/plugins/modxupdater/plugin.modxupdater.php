@@ -9,24 +9,32 @@
 
 
 if(!defined('MODX_BASE_PATH')){die('What are you doing? Get out of here!');}
+//lang
+$_lang = array();
+$plugin_path = $modx->config['base_path'] . "assets/plugins/modxupdater/";
+include($plugin_path.'lang/english.php');
+if (file_exists($plugin_path.'lang/' . $modx->config['manager_language'] . '.php')) {
+    include($plugin_path.'lang/' . $modx->config['manager_language'] . '.php');
+}
+
 $e = &$modx->Event;
 if($e->name == 'OnManagerWelcomePrerender'){
     $errorsMessage = '';
     $errors = 0;
     if (!extension_loaded('curl')){
-        $errorsMessage .= '-Необходимо включить функцию CURL в PHP<br>';
+        $errorsMessage .= '-'.$_lang['error_curl'].'<br>';
         $errors += 1;
     }
     if (!extension_loaded('zip')){
-        $errorsMessage .= '-Необходимо включить функцию ZIP в PHP<br>';
+        $errorsMessage .= '-'.$_lang['error_zip'].'<br>';
         $errors += 1;
     }
     if (!extension_loaded('openssl')){
-        $errorsMessage .= '-Необходимо включить функцию OpenSSL в PHP<br>';
+        $errorsMessage .= '-'.$_lang['error_openssl'].'<br>';
         $errors += 1;
     }
     if (!is_writable(MODX_BASE_PATH.'assets/')){
-        $errorsMessage .= '-Файлы MODX не доступны для перезаписи<br>';
+        $errorsMessage .= '-'.$_lang['error_overwrite'].'<br>';
         $errors += 1;
     }
     
@@ -70,17 +78,17 @@ if($e->name == 'OnManagerWelcomePrerender'){
     if(($role!=1) AND ($showButton == 'AdminOnly') OR ($showButton == 'hide') OR ($errors > 0)) {
         $updateButton = '';
     }  else {
-    $updateButton = '<a target="_parent" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-default">Обновить до версии '.$gitVersion.'</a><br><br>';
+    $updateButton = '<a target="_parent" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-default">'.$_lang['updateButton_txt'].' '.$gitVersion.'</a><br><br>';
     }   
     $output = '<li id="modxupdate_widget" data-row="7" data-col="1" data-sizex="4" data-sizey="3" class="gs-w" style="margin-top:10px">
         <div class="panel panel-default widget-wrapper">
           <div style=cursor:auto;" class="panel-headingx widget-title sectionHeader clearfix">
-            <span style=cursor:auto;" class="panel-handel pull-left"><i class="fa fa-exclamation-triangle"></i> Обновление системы</span>
+            <span style=cursor:auto;" class="panel-handel pull-left"><i class="fa fa-exclamation-triangle"></i> '.$_lang['system_update'].'</span>
           </div>
           <div class="panel-body widget-stage sectionBody">
-               Система управления сайтом устарела. Для обновления обратитесь к разработчикам сайта. Актуальная версия <strong>'.$gitVersion.'</strong> <br><br>
+              '.$_lang['cms_outdated_msg'].' <strong>'.$gitVersion.'</strong> <br><br>
                '.$updateButton.'
-               <small style="color:red;font-size:10px">Настоятельно рекомендую сделать бекап перед обновлением системы, обновление выполняете на свой страх и риск!!</small>
+               <small style="color:red;font-size:10px"> '.$_lang['bkp_before_msg'].'</small>
                <small style="color:red;font-size:10px">'.$errorsMessage.'</small>
           </div>
         </div>
