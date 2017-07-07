@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @package     modx
  * @author      Dmi3yy (dmi3yy.com) 
- * @internal    @events OnManagerWelcomePrerender,OnPageNotFound,OnSiteRefresh
+ * @internal    @events OnManagerWelcomePrerender,OnManagerWelcomeHome,OnPageNotFound,OnSiteRefresh
  * @internal    @modx_category Manager and Admin
  * @internal    @properties &showButton=Show Update Button:;menu;show,hide,AdminOnly;AdminOnly &version=Version:;menu;auto,modxcms/evolution,dmi3yy/modx.evo.custom;auto &type=Type:;menu;tags,releases,develop;tags 
  * @internal    @installset base
