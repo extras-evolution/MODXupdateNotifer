@@ -1,5 +1,5 @@
-<?php
 
+//<?
 /*
 @TODO
 — Мультиязычность 
@@ -18,6 +18,9 @@ if (file_exists($plugin_path.'lang/' . $modx->config['manager_language'] . '.php
 }
 
 $e = &$modx->Event;
+if($e->name == 'OnSiteRefresh'){
+    array_map("unlink", glob(MODX_BASE_PATH . 'assets/cache/updater/*.json'));
+}   
 if($e->name == 'OnManagerWelcomePrerender'){
     $errorsMessage = '';
     $errors = 0;
@@ -47,9 +50,7 @@ if($e->name == 'OnManagerWelcomePrerender'){
     }
 
     $output = '';
-    require_once(MODX_MANAGER_PATH.'media/rss/rss_cache.inc');
-    $cache = new RSSCache(MODX_BASE_PATH.'assets/cache/', $cache_lifetime*3600);
-    if($cache->check_cache('unw') != 'HIT'){
+    if(!file_exists(MODX_BASE_PATH . 'assets/cache/updater/check_'.date("l").'.json')){
         $ch = curl_init();
         $url = 'https://api.github.com/repos/'.$version.'/'.$type;
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -63,22 +64,24 @@ if($e->name == 'OnManagerWelcomePrerender'){
         curl_close($ch);
         if (substr($info,0,1) != '[') return;
         $info = json_decode($info,true);
-        $gitVersion = $info[0]['name'];
-        $cache->set('unw',$gitVersion);
-    } else {
-        $gitVersion= $cache->get('unw');
+        $git['version'] = $info[0]['name'];
+        file_put_contents(MODX_BASE_PATH . 'assets/cache/updater/check_'.date("d").'.json', json_encode($git));
+    }else{
+        $git = file_get_contents( MODX_BASE_PATH . 'assets/cache/updater/check_'.date("d").'.json');
+        $git = json_decode($set, true);
     }
+    
     $currentVersion = $modx->getVersionData();
 
     $_SESSION['updatelink'] = md5(time());
-    $_SESSION['updateversion'] = $gitVersion;
-    if ($gitVersion != $currentVersion['version']) {
+    $_SESSION['updateversion'] = $git['version'];
+    if ($git['version'] != $currentVersion['version']) {
     // get manager role
     $role = $_SESSION['mgrRole'];
     if(($role!=1) AND ($showButton == 'AdminOnly') OR ($showButton == 'hide') OR ($errors > 0)) {
         $updateButton = '';
     }  else {
-    $updateButton = '<a target="_parent" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-default">'.$_lang['updateButton_txt'].' '.$gitVersion.'</a><br><br>';
+    $updateButton = '<a target="_parent" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-default">'.$_lang['updateButton_txt'].' '.$git['version'].'</a><br><br>';
     }   
     $output = '<li id="modxupdate_widget" data-row="7" data-col="1" data-sizex="4" data-sizey="3" class="gs-w" style="margin-top:10px">
         <div class="panel panel-default widget-wrapper">
@@ -86,7 +89,7 @@ if($e->name == 'OnManagerWelcomePrerender'){
             <span style=cursor:auto;" class="panel-handel pull-left"><i class="fa fa-exclamation-triangle"></i> '.$_lang['system_update'].'</span>
           </div>
           <div class="panel-body widget-stage sectionBody">
-              '.$_lang['cms_outdated_msg'].' <strong>'.$gitVersion.'</strong> <br><br>
+              '.$_lang['cms_outdated_msg'].' <strong>'.$git['version'].'</strong> <br><br>
                '.$updateButton.'
                <small style="color:red;font-size:10px"> '.$_lang['bkp_before_msg'].'</small>
                <small style="color:red;font-size:10px">'.$errorsMessage.'</small>
@@ -235,3 +238,4 @@ header("Location: /install/index.php?action=mode");
     }
     
 }
+
