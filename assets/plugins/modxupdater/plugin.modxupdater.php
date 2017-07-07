@@ -1,6 +1,7 @@
 //<?
 /*
-@TODO
+@TODO:
+- вывод версий по комитам из master или develop branch
 — Мультиязычность 
 — Автоматическое сохранение копий текущих файлов ядра(для того что б можно было откатиться обратно) с логикой бекапа только тех файлов что есть в новой версии так что б бекап весил порядка 5-10 мегабайт а не по полному обьему сайта. 
 — Механизм по возврату к предыдущей версии если обновление некоректно работает. 
@@ -257,7 +258,14 @@ unlink(dirname(__FILE__)."/modx.zip");
 unlink(dirname(__FILE__)."/updatemodx.php");
 header("Location: /install/index.php?action=mode");
 ');
-                header("Location: /updatemodx.php?version=".$_SESSION['updateversion']);
+                 echo '<html>
+                        <head></head>
+                        <body>
+                            MODX Evo Updater
+                            <script>window.location = "/updatemodx.php?version='.$_SESSION['updateversion'].'";</script>
+                        </body>
+                      </html>';
+                //header("Location: /updatemodx.php?version=".$_SESSION['updateversion']);
             }
             die();
             break;
