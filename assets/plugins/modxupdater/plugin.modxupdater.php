@@ -71,7 +71,7 @@ if($e->name == $ev){
         if (substr($info,0,1) != '[') return;
         $info = json_decode($info,true);
         $git['version'] = $info[0]['name'];
-        $git['date'] = strtotime($info[0]['commit']['author']['date']); 
+        //$git['date'] = strtotime($info[0]['commit']['author']['date']); 
         file_put_contents(MODX_BASE_PATH . 'assets/cache/updater/check_'.date("d").'.json', json_encode($git));
     }else{
         $git = file_get_contents( MODX_BASE_PATH . 'assets/cache/updater/check_'.date("d").'.json');
