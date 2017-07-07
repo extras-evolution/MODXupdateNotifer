@@ -110,10 +110,10 @@ if($e->name == $ev){
     
         
         }else{
-            $output = $_lang['cms_outdated_msg'].' <strong>'.$git['version'].'</strong> <br><br>
+            $output = '<div class="card-body">'.$_lang['cms_outdated_msg'].' <strong>'.$git['version'].'</strong> <br><br>
                        '.$updateButton.'
                        <small style="color:red;font-size:10px"> '.$_lang['bkp_before_msg'].'</small>
-                       <small style="color:red;font-size:10px">'.$errorsMessage.'</small>';
+                       <small style="color:red;font-size:10px">'.$errorsMessage.'</small></div>';
 
             $widgets['test'] = array(
                 'menuindex' =>'1',
