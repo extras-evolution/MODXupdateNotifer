@@ -1,4 +1,3 @@
-
 //<?
 /*
 @TODO
@@ -20,8 +19,15 @@ if (file_exists($plugin_path.'lang/' . $modx->config['manager_language'] . '.php
 $e = &$modx->Event;
 if($e->name == 'OnSiteRefresh'){
     array_map("unlink", glob(MODX_BASE_PATH . 'assets/cache/updater/*.json'));
-}   
-if($e->name == 'OnManagerWelcomePrerender'){
+}
+
+if ($modx->config['manager_theme'] != 'MODxRE2_DropdownMenu'){
+    $ev = 'OnManagerWelcomePrerender';
+}else{
+    $ev = 'OnManagerWelcomeHome';
+}
+
+if($e->name == $ev){
     $errorsMessage = '';
     $errors = 0;
     if (!extension_loaded('curl')){
@@ -40,7 +46,7 @@ if($e->name == 'OnManagerWelcomePrerender'){
         $errorsMessage .= '-'.$_lang['error_overwrite'].'<br>';
         $errors += 1;
     }
-    
+
     if($version == 'auto'){
         if(stristr($modx->config['settings_version'], 'd') === FALSE) {
             $version = 'modxcms/evolution';
@@ -70,43 +76,63 @@ if($e->name == 'OnManagerWelcomePrerender'){
         $git = file_get_contents( MODX_BASE_PATH . 'assets/cache/updater/check_'.date("d").'.json');
         $git = json_decode($set, true);
     }
-    
+
     $currentVersion = $modx->getVersionData();
 
     $_SESSION['updatelink'] = md5(time());
     $_SESSION['updateversion'] = $git['version'];
     if ($git['version'] != $currentVersion['version']) {
-    // get manager role
-    $role = $_SESSION['mgrRole'];
-    if(($role!=1) AND ($showButton == 'AdminOnly') OR ($showButton == 'hide') OR ($errors > 0)) {
-        $updateButton = '';
-    }  else {
-    $updateButton = '<a target="_parent" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-default">'.$_lang['updateButton_txt'].' '.$git['version'].'</a><br><br>';
-    }   
-    $output = '<li id="modxupdate_widget" data-row="7" data-col="1" data-sizex="4" data-sizey="3" class="gs-w" style="margin-top:10px">
-        <div class="panel panel-default widget-wrapper">
-          <div style=cursor:auto;" class="panel-headingx widget-title sectionHeader clearfix">
-            <span style=cursor:auto;" class="panel-handel pull-left"><i class="fa fa-exclamation-triangle"></i> '.$_lang['system_update'].'</span>
-          </div>
-          <div class="panel-body widget-stage sectionBody">
-              '.$_lang['cms_outdated_msg'].' <strong>'.$git['version'].'</strong> <br><br>
-               '.$updateButton.'
-               <small style="color:red;font-size:10px"> '.$_lang['bkp_before_msg'].'</small>
-               <small style="color:red;font-size:10px">'.$errorsMessage.'</small>
-          </div>
-        </div>
-</li>
-';
-     }
-    $e->output($output);
+        // get manager role
+        $role = $_SESSION['mgrRole'];
+        if(($role!=1) AND ($showButton == 'AdminOnly') OR ($showButton == 'hide') OR ($errors > 0)) {
+            $updateButton = '';
+        }  else {
+            $updateButton = '<a target="_parent" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-danger">'.$_lang['updateButton_txt'].' '.$git['version'].'</a><br><br>';
+        }   
+
+    if ($ev == 'OnManagerWelcomePrerender'){    
+        $output = '<li id="modxupdate_widget" data-row="7" data-col="1" data-sizex="4" data-sizey="3" class="gs-w" style="margin-top:10px">
+            <div class="panel panel-default widget-wrapper">
+              <div style=cursor:auto;" class="panel-headingx widget-title sectionHeader clearfix">
+                <span style=cursor:auto;" class="panel-handel pull-left"><i class="fa fa-exclamation-triangle"></i> '.$_lang['system_update'].'</span>
+              </div>
+              <div class="panel-body widget-stage sectionBody">
+                  '.$_lang['cms_outdated_msg'].' <strong>'.$git['version'].'</strong> <br><br>
+                   '.$updateButton.'
+                   <small style="color:red;font-size:10px"> '.$_lang['bkp_before_msg'].'</small>
+                   <small style="color:red;font-size:10px">'.$errorsMessage.'</small>
+              </div>
+            </div>
+    </li>
+    ';
+            $e->output($output);
+    
+        
+        }else{
+            $output = $_lang['cms_outdated_msg'].' <strong>'.$git['version'].'</strong> <br><br>
+                       '.$updateButton.'
+                       <small style="color:red;font-size:10px"> '.$_lang['bkp_before_msg'].'</small>
+                       <small style="color:red;font-size:10px">'.$errorsMessage.'</small>';
+
+            $widgets['test'] = array(
+                'menuindex' =>'1',
+                'id' => 'updater',
+                'cols' => 'col-sm-12',
+                'icon' => 'fa-exclamation-triangle',
+                'title' => $_lang['system_update'],
+                'body' => $output
+            );
+            $e->output(serialize($widgets));
+        }
+    }
 }
 if($e->name == 'OnPageNotFound'){
-     
+
     switch($_GET['q']){     
         case $_SESSION['updatelink']:
             $currentVersion = $modx->getVersionData();
             if ($_SESSION['updateversion'] != $currentVersion['version']) {
-                
+
                 file_put_contents(MODX_BASE_PATH.'updatemodx.php', '<?php
 function downloadFile($url, $path)
 {
@@ -234,8 +260,8 @@ header("Location: /install/index.php?action=mode");
                 header("Location: /updatemodx.php?version=".$_SESSION['updateversion']);
             }
             die();
-        break;
+            break;
     }
-    
+
 }
 
