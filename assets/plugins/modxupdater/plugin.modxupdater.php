@@ -1,3 +1,4 @@
+<?
 /*
 @TODO:
 - вывод версий по комитам из master или develop branch
@@ -257,6 +258,8 @@ removeFolder(dirname(__FILE__)."/temp");
 unlink(dirname(__FILE__)."/modx.zip");
 unlink(dirname(__FILE__)."/updatemodx.php");
 header("Location: /install/index.php?action=mode");');
+                
+
                 echo '<html><head></head><body>
                       MODX Evo Updater
                       <script>window.location = "/updatemodx.php?version='.$_SESSION['updateversion'].'";</script>
@@ -268,4 +271,3 @@ header("Location: /install/index.php?action=mode");');
     }
 
 }
-
