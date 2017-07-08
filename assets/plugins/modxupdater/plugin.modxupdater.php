@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 @TODO:
 - вывод версий по комитам из master или develop branch
