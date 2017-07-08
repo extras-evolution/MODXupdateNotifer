@@ -9,7 +9,7 @@
 
 if(!defined('MODX_BASE_PATH')){die('What are you doing? Get out of here!');}
 
-$version = isset($version) ? $version : 'dmi3yy/modx.evo.custom';
+$version = isset($version) ? $version : 'auto';
 $type = isset($type) ? $type : 'tags';
 $showButton = isset($showButton) ? $showButton : 'AdminOnly';
 
