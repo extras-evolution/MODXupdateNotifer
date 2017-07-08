@@ -61,7 +61,7 @@ if($e->name == $ev){
     }
 
     $output = '';
-    if(!file_exists(MODX_BASE_PATH . 'assets/cache/updater/check_'.date("l").'.json')){
+    if(!file_exists(MODX_BASE_PATH . 'assets/cache/updater/check_'.date("d").'.json')){
         $ch = curl_init();
         $url = 'https://api.github.com/repos/'.$version.'/'.$type;
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
