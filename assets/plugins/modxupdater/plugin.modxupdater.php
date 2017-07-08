@@ -9,11 +9,9 @@
 
 if(!defined('MODX_BASE_PATH')){die('What are you doing? Get out of here!');}
 
-$version = isset($version) ? $version : 'auto';
-$type = isset($type) ? $type : 'tags';
-$showButton = isset($showButton) ? $showButton : 'AdminOnly';
-
-
+$version = isset($version) ? $version: 'auto';
+$type = isset($type) ? $type: 'tags';
+$showButton = isset($showButton) ? $showButton: 'AdminOnly';
 
 //lang
 $_lang = array();
