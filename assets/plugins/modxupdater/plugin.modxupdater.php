@@ -7,8 +7,14 @@
 — Механизм по возврату к предыдущей версии если обновление некоректно работает. 
 */
 
-
 if(!defined('MODX_BASE_PATH')){die('What are you doing? Get out of here!');}
+
+$version = isset($version) ? $version : 'dmi3yy/modx.evo.custom';
+$type = isset($type) ? $type : 'tags';
+$showButton = isset($showButton) ? $showButton : 'AdminOnly';
+
+
+
 //lang
 $_lang = array();
 $plugin_path = $modx->config['base_path'] . "assets/plugins/modxupdater/";
