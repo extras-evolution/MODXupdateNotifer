@@ -80,7 +80,7 @@ if($e->name == $ev){
         file_put_contents(MODX_BASE_PATH . 'assets/cache/updater/check_'.date("d").'.json', json_encode($git));
     }else{
         $git = file_get_contents( MODX_BASE_PATH . 'assets/cache/updater/check_'.date("d").'.json');
-        $git = json_decode($set, true);
+        $git = json_decode($git, true);
     }
 
     $currentVersion = $modx->getVersionData();
@@ -93,7 +93,7 @@ if($e->name == $ev){
         if(($role!=1) AND ($showButton == 'AdminOnly') OR ($showButton == 'hide') OR ($errors > 0)) {
             $updateButton = '';
         }  else {
-            $updateButton = '<a target="_parent" href="/'.$_SESSION['updatelink'].'" class="btn btn-sm btn-danger">'.$_lang['updateButton_txt'].' '.$git['version'].'</a><br><br>';
+            $updateButton = '<a target="_parent" href="'.MODX_SITE_URL.$_SESSION['updatelink'].'" class="btn btn-sm btn-danger">'.$_lang['updateButton_txt'].' '.$git['version'].'</a><br><br>';
         }   
 
     if ($ev == 'OnManagerWelcomePrerender'){    
