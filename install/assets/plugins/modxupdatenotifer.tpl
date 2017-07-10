@@ -5,7 +5,7 @@
  * show message about outdated CMS version
  *
  * @category    plugin
- * @version     0.5
+ * @version     0.6
  * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @package     modx
  * @author      Dmi3yy (dmi3yy.com) 
