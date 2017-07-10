@@ -266,7 +266,7 @@ header("Location: /install/index.php?action=mode");');
 
                 echo '<html><head></head><body>
                       MODX Evo Updater
-                      <script>window.location = "'.MODX_SITE_URL.'/updatemodx.php?version='.$_SESSION['updateversion'].'";</script>
+                      <script>window.location = "'.MODX_SITE_URL.'updatemodx.php?version='.$_SESSION['updateversion'].'";</script>
                       </body></html>';
                 //header("Location: /updatemodx.php?version=".$_SESSION['updateversion']);
             }
